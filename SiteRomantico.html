@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Um Mês — Para Você</title>
+  <style>
+    :root{
+      --blue:#0b66ff;
+      --deep:#020307;
+      --white:#ffffff;
+      --pink:#ff6fa3;
+      --glass: rgba(255,255,255,0.06);
+      --shadow: 0 10px 30px rgba(2,3,7,0.6);
+      --radius:18px;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--deep) 0%, #040615 100%);color:var(--white);}
+    a{color:inherit;text-decoration:none}
+
+    header{
+      display:flex;align-items:center;justify-content:space-between;padding:24px 28px;gap:16px;
+      backdrop-filter: blur(6px);
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:58px;height:58px;border-radius:12px;background:linear-gradient(135deg,var(--blue),#00c2ff);display:grid;place-items:center;font-weight:700;box-shadow:var(--shadow)}
+    .brand h1{font-size:16px;margin:0}
+    nav{display:flex;gap:12px}
+    .btn{padding:10px 16px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.08);cursor:pointer}
+
+    main{padding:28px;max-width:1100px;margin:0 auto}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:36px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));padding:28px;border-radius:var(--radius);box-shadow:var(--shadow)}
+
+    .title{font-size:34px;line-height:1.05;margin:0 0 12px}
+    .subtitle{color:rgba(255,255,255,0.7);margin:0 0 18px}
+
+    .reveal-area{min-height:340px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:14px}
+    .floating-shape{position:absolute;border-radius:50%;opacity:0.08;filter:blur(26px)}
+    .float1{width:420px;height:420px;right:-80px;top:-60px;background:linear-gradient(45deg,var(--blue),#00c2ff)}
+    .float2{width:280px;height:280px;left:-80px;bottom:-80px;background:linear-gradient(45deg,#7d7dfe,#00d4c3)}
+
+    .love-btn{display:inline-flex;gap:10px;align-items:center;padding:14px 20px;border-radius:14px;background:linear-gradient(90deg,var(--blue),#00c2ff);border:none;color:var(--deep);font-weight:700;cursor:pointer}
+
+    /* Gallery styles */
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:14px}
+    .photo{width:100%;height:160px;background:#222;border-radius:10px;overflow:hidden;position:relative;transform-origin:center;cursor:pointer}
+    .photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.9,.3,1),filter .6s}
+    .photo.show img{transform:scale(1.12);filter:brightness(1)}
+    .photo.hide img{transform:scale(.92);filter:grayscale(.6) blur(2px);opacity:.2}
+
+    /* Staggered animation classes */
+    .animate-pop{animation:pop .7s cubic-bezier(.2,.9,.3,1) both}
+    @keyframes pop{0%{transform:translateY(26px) scale(.92);opacity:0}100%{transform:none;opacity:1}}
+
+    /* Second (pink) page */
+    section#carta{display:none;padding:40px 28px;min-height:70vh}
+    .carta-wrap{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:center}
+    .carta-card{background:linear-gradient(180deg,rgba(0,0,0,0.7),rgba(255,255,255,0.02));padding:28px;border-radius:18px;border:1px solid rgba(255,255,255,0.04)}
+    .carta-left{background:linear-gradient(180deg,var(--pink),#ffd0e6);padding:18px;border-radius:14px;color:var(--deep)}
+    .carta-left img{width:100%;border-radius:12px;display:block}
+    .carta-text{color:#fff}
+    .carta-text h2{margin:0 0 8px}
+    .carta-text p{margin:0 0 12px;color:rgba(255,255,255,0.85)}
+
+    /* footer */
+    footer{padding:28px;text-align:center;color:rgba(255,255,255,0.6)}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+      .carta-wrap{grid-template-columns:1fr}
+    }
+    @media (max-width:520px){
+      .gallery{grid-template-columns:1fr}
+    }
+
+    /* small helper for hearts */
+    .heart{position:absolute;width:24px;height:24px;transform:translate(-50%,-50%) scale(.6);pointer-events:none;opacity:0;animation:heartPop .9s forwards}
+    @keyframes heartPop{0%{opacity:1;transform:translate(-50%,-50%) scale(.4)}70%{transform:translate(-50%,-50%) scale(1.2)}100%{opacity:0;transform:translate(-50%,-80%) scale(1)} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">❤</div>
+      <div>
+        <h1>Um Mês — Para Você</h1>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6)">Um site feito com carinho</div>
+      </div>
+    </div>
+    <nav>
+      <button class="btn" id="btnGallery">Galeria</button>
+      <button class="btn" id="btnCarta">Carta</button>
+      <button class="btn" id="btnShare">Salvar & Compartilhar</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="card">
+        <h2 class="title">Feliz 1 mês, amor 💙</h2>
+        <p class="subtitle">Clique no botão e veja nossas fotos aparecerem com efeitos especiais. Troque as imagens nas marcações do código por suas fotos reais antes de subir ao Replit.</p>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="love-btn" id="reveal">VER FOTOS</button>
+          <button class="btn" id="surprise">Surpresa</button>
+        </div>
+
+        <div style="margin-top:18px;color:rgba(255,255,255,0.6);font-size:14px">Dica: troque as legendas e mensagens dentro do elemento <code data-code>data-msg</code> no HTML.</div>
+      </div>
+
+      <div class="reveal-area card" id="revealArea">
+        <div class="floating-shape float1"></div>
+        <div class="floating-shape float2"></div>
+
+        <!-- Galeria: substitua as imagens em data-src pelos URLs das suas fotos (Google Drive com link público, Imgur, ou arquivos no Replit) -->
+        <div id="gallery" class="gallery" aria-hidden="true">
+          <!-- Exemplos: substitua data-src com suas imagens -->
+          <div class="photo" data-src="https://picsum.photos/800/600?random=101" data-msg="Primeiro encontro :)">
+            <img alt="foto1">
+          </div>
+          <div class="photo" data-src="https://picsum.photos/800/600?random=102" data-msg="Você me faz rir">
+            <img alt="foto2">
+          </div>
+          <div class="photo" data-src="https://picsum.photos/800/600?random=103" data-msg="Minha favorita">
+            <img alt="foto3">
+          </div>
+          <div class="photo" data-src="https://picsum.photos/800/600?random=104" data-msg="Noite inesquecível">
+            <img alt="foto4">
+          </div>
+          <div class="photo" data-src="https://picsum.photos/800/600?random=105" data-msg="Te amo muito">
+            <img alt="foto5">
+          </div>
+          <div class="photo" data-src="https://picsum.photos/800/600?random=106" data-msg="Pra sempre nós">
+            <img alt="foto6">
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Carta / página secundária com esquema preto/branco/rosa -->
+    <section id="carta">
+      <div class="carta-wrap">
+        <div class="carta-card carta-text">
+          <h2>Minha carta para você 💌</h2>
+          <p>Meu amor, há 1 mês você entrou na minha vida e... (substitua este texto pela sua carta). Este espaço é para você escrever algo bem romântico. Use &lt;br&gt; para pular linhas.</p>
+          <p style="font-style:italic;color:rgba(255,255,255,0.85)">"Cada dia com você é meu favorito."</p>
+          <div style="margin-top:12px">
+            <button class="love-btn" id="downloadCarta">Baixar carta</button>
+            <button class="btn" id="backToGallery">Voltar</button>
+          </div>
+        </div>
+
+        <div class="carta-left">
+          <!-- Substitua a imagem abaixo pela sua foto feliz -->
+          <img id="fotoFeliz" src="https://picsum.photos/600/800?random=10" alt="foto feliz">
+          <div style="margin-top:12px;font-weight:700">Meu sorriso com você</div>
+          <div style="font-size:13px;opacity:.9">Troque essa foto pela sua imagem favorita — use um link público ou faça upload no Replit.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div>Feito com amor — personalize tudo e envie o link para ele. ❤️</div>
+  </footer>
+
+  <script>
+    // Helper: load images from data-src
+    const photos = Array.from(document.querySelectorAll('.photo'));
+    photos.forEach(p=>{
+      const img = p.querySelector('img');
+      img.src = p.dataset.src;
+      img.alt = p.dataset.msg || 'foto';
+    });
+
+    const gallery = document.getElementById('gallery');
+    const revealBtn = document.getElementById('reveal');
+    const revealArea = document.getElementById('revealArea');
+    const btnCarta = document.getElementById('btnCarta');
+    const sectionCarta = document.getElementById('carta');
+    const btnGallery = document.getElementById('btnGallery');
+    const btnShare = document.getElementById('btnShare');
+    const surprise = document.getElementById('surprise');
+    const backToGallery = document.getElementById('backToGallery');
+    const downloadCarta = document.getElementById('downloadCarta');
+
+    // Mostra/oculta a seção carta
+    btnCarta.addEventListener('click',()=>{
+      document.body.style.background = 'linear-gradient(180deg,#050205, #2b0022)';
+      sectionCarta.style.display = 'block';
+      window.location.hash = '#carta';
+    });
+    btnGallery.addEventListener('click',()=>{
+      sectionCarta.style.display = 'none';
+      document.body.style.background = 'linear-gradient(180deg,var(--deep) 0%, #040615 100%)';
+      window.location.hash = '';
+    });
+
+    backToGallery.addEventListener('click',()=>btnGallery.click());
+
+    // Função que revela as fotos com efeitos variados
+    function revealPhotos(){
+      gallery.setAttribute('aria-hidden','false');
+      // shuffle
+      const order = photos.map((p,i)=>i).sort(()=>Math.random()-0.5);
+      order.forEach((idx, i)=>{
+        const p = photos[idx];
+        setTimeout(()=>{
+          p.classList.remove('hide');
+          p.classList.add('animate-pop','show');
+          // pequena reação de coração
+          spawnHeart(Math.random()*80 + 10, Math.random()*60 + 10);
+        }, i*220);
+      });
+    }
+
+    // Inicialmente escondemos as fotos
+    photos.forEach(p=>{p.classList.add('hide');});
+
+    revealBtn.addEventListener('click',()=>{
+      revealPhotos();
+      // suave brilho no botão
+      revealBtn.animate([{transform:'scale(1)'},{transform:'scale(1.03)'},{transform:'scale(1)'}],{duration:900});
+    });
+
+    // Botao surpresa: abre carta e baixa uma imagem composta
+    surprise.addEventListener('click',()=>{
+      btnCarta.click();
+      setTimeout(()=>downloadCarta.click(),800);
+    });
+
+    // Baixar carta: cria um arquivo de texto com a carta
+    downloadCarta.addEventListener('click',()=>{
+      const texto = Array.from(document.querySelectorAll('.carta-text p')).map(p=>p.innerText).join('\n\n');
+      const blob = new Blob([texto],{type:'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'carta_para_voce.txt';
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // Spawn a tiny heart element for visual effect
+    function spawnHeart(x,y){
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = x + '%';
+      heart.style.top = y + '%';
+      heart.innerHTML = '❤';
+      revealArea.appendChild(heart);
+      setTimeout(()=>heart.remove(),900);
+    }
+
+    // Click em uma foto mostra a legenda e um efeito maior (pode substituir por modal)
+    photos.forEach(p=>{
+      p.addEventListener('click',()=>{
+        const msg = p.dataset.msg || '';
+        // pequeno efeito "pulse"
+        p.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:600});
+        // mostrar mensagem temporária
+        const tip = document.createElement('div');
+        tip.style.position='absolute';tip.style.left='50%';tip.style.top='12%';tip.style.transform='translateX(-50%)';
+        tip.style.padding='10px 14px';tip.style.background='rgba(0,0,0,0.6)';tip.style.borderRadius='10px';tip.style.backdropFilter='blur(6px)';
+        tip.innerText = msg;
+        revealArea.appendChild(tip);
+        setTimeout(()=>tip.remove(),2200);
+      });
+    });
+
+    // Save / share: instruções rápidas — copia o link atual (útil no Replit)
+    btnShare.addEventListener('click',()=>{
+      const url = location.href;
+      navigator.clipboard.writeText(url).then(()=>{
+        btnShare.innerText = 'Link copiado!';
+        setTimeout(()=>btnShare.innerText='Salvar & Compartilhar',1600);
+      }).catch(()=>{
+        alert('Não foi possível copiar automaticamente — copie o link da barra de endereço.');
+      })
+    });
+
+    // On load: if hash carta, open it
+    if(location.hash === '#carta') btnCarta.click();
+
+    // INSTRUÇÕES IMPORTANTES (visíveis no código):
+    // 1) Substitua os atributos data-src nas divs .photo por URLs diretos das suas fotos.
+    //    - No Replit, faça upload das imagens no painel left -> files e referencie por 
+    //      "./<nome-da-imagem>.jpg".
+    //    - No Google Drive, use um link público convertido para direct link ou use Imgur.
+    // 2) Substitua a imagem #fotoFeliz pela sua foto (link público ou arquivo no Replit).
+    // 3) Edite textos da carta dentro da seção <section id="carta"> para personalizar.
+    // 4) Para subir no Replit: crie um novo Replit com template "HTML, CSS, JS", cole este arquivo em index.html, e clique em Run. Envie o link público para o seu namorado.
+
+  </script>
+</body>
+</html>
